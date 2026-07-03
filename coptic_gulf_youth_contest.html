@@ -1,0 +1,665 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coptic Gulf Youth Contest</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  padding: 40px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+  margin: 0 auto 20px;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
+h1 {
+  color: #333;
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 16px;
+}
+
+.screen {
+  display: none;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Name Entry Screen */
+.name-screen {
+  text-align: center;
+}
+
+.name-screen h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.name-screen p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #5eb3c7;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #3d8a9e;
+  box-shadow: 0 0 0 3px rgba(94, 179, 199, 0.1);
+}
+
+button {
+  padding: 12px 32px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background-color: #5eb3c7;
+  color: white;
+}
+
+button:hover {
+  background-color: #3d8a9e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(94, 179, 199, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Video Screen */
+.video-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5eb3c7 0%, #3d8a9e 100%);
+  transition: width 0.3s ease;
+}
+
+.video-info {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.video-info h2 {
+  color: #2c3e50;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.video-info p {
+  color: #999;
+  font-size: 14px;
+}
+
+.video-container {
+    max-width: 350px; /* Adjust this to make the player wider or narrower */
+    margin: 0 auto; /* Centers the video on the page */
+    aspect-ratio: 9 / 16; /* Locks in the vertical mobile proportions */
+    background-color: #000; /* Black background behind the video */
+    border-radius: 16px; /* Optional: gives it curved edges like a smartphone */
+    overflow: hidden; /* Keeps the video neatly inside the curved edges */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Optional: adds a nice shadow */
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-placeholder {
+  text-align: center;
+  color: #999;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #1a1a1a;
+}
+
+.video-placeholder i {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+/* MCQ Screen */
+.mcq-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.question {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #5eb3c7;
+}
+
+.question h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  text-align: left;
+  font-size: 15px;
+  color: #333;
+}
+
+.option:hover {
+  border-color: #5eb3c7;
+  background: #f0f8fa;
+}
+
+.option.selected {
+  border-color: #5eb3c7;
+  background: #e0f2f7;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.option.correct {
+  border-color: #27ae60;
+  background: #d5f4e6;
+  color: #27ae60;
+}
+
+.option.incorrect {
+  border-color: #e74c3c;
+  background: #fadbd8;
+  color: #c0392b;
+}
+
+.submit-btn {
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+.submit-btn:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Results Screen */
+.results-screen {
+  text-align: center;
+}
+
+.results-screen h2 {
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.score-display {
+  background: linear-gradient(135deg, #5eb3c7 0%, #3d8a9e 100%);
+  color: white;
+  padding: 40px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.score-number {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.score-text {
+  font-size: 18px;
+  opacity: 0.95;
+}
+
+.results-details {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.result-item {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-item-question {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.result-item-answer {
+  padding: 4px 12px;
+  background: #5eb3c7;
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.result-item-answer.correct {
+  background: #27ae60;
+}
+
+.result-item-answer.incorrect {
+  background: #e74c3c;
+}
+
+.reset-btn {
+  margin-top: 20px;
+  background-color: #5eb3c7;
+}
+
+.user-name-display {
+  color: #5eb3c7;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.question-counter {
+  display: inline-block;
+  background: #5eb3c7;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Name Entry Screen -->
+  <div class="screen active" id="nameScreen">
+    <div class="header">
+      <div class="logo">
+        <img src="https://drive.usercontent.google.com/u/0/uc?id=1mX47w1mWsimA6RFTBfQCNSq4FDIwhD8B&export=view" alt="Coptic Gulf Youth">
+      </div>
+      <h1>Coptic Gulf Youth</h1>
+      <p class="subtitle">Our video challenge</p>
+    </div>
+    
+    <div class="name-screen">
+      <h2>Let's Get Started</h2>
+      <p>Please enter your name to participate</p>
+      <div class="form-group">
+        <input type="text" id="nameInput" placeholder="Enter your name" onkeypress="handleNameKeypress(event)">
+        <div class="error-message" id="nameError"></div>
+      </div>
+      <button onclick="startContest()">Begin Contest</button>
+    </div>
+  </div>
+
+  <!-- Question 1 Screen -->
+  <div class="screen" id="question1Screen">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 33%"></div>
+    </div>
+    
+    <div class="video-info">
+      <h2>Question 1 of 3</h2>
+      <p>Watch the video and answer the question</p>
+    </div>
+
+   <div class="video-container">
+  <video width="100%" controls>
+    <source src="Part1_final(1).mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+    <div class="mcq-screen">
+      <div class="question">
+        <div class="question-counter">Question 1</div>
+        <h3 id="q1Question">How many loading cycles have passed in the video?</h3>
+      </div>
+      <div class="options" id="q1Options"></div>
+      <button class="submit-btn" onclick="submitAnswer(1)" id="q1Submit" disabled>Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- Question 2 Screen -->
+  <div class="screen" id="question2Screen">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 66%"></div>
+    </div>
+    
+    <div class="video-info">
+      <h2>Question 2 of 3</h2>
+      <p>Watch the video and answer the question</p>
+    </div>
+
+    <div class="video-container">
+  <video width="100%" controls>
+    <source src="Part2_final(1).mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+    <div class="mcq-screen">
+      <div class="question">
+        <div class="question-counter">Question 2</div>
+        <h3 id="q2Question">How many loading cycles have passed in the video?</h3>
+      </div>
+      <div class="options" id="q2Options"></div>
+      <button class="submit-btn" onclick="submitAnswer(2)" id="q2Submit" disabled>Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- Question 3 Screen -->
+  <div class="screen" id="question3Screen">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 100%"></div>
+    </div>
+    
+    <div class="video-info">
+      <h2>Question 3 of 3</h2>
+      <p>Watch the video and answer the question</p>
+    </div>
+
+    <div class="video-container">
+  <video width="100%" controls>
+    <source src="Part3_final(1).mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+    <div class="mcq-screen">
+      <div class="question">
+        <div class="question-counter">Question 3</div>
+        <h3 id="q3Question">How many loading cycles have passed in the video?</h3>
+      </div>
+      <div class="options" id="q3Options"></div>
+      <button class="submit-btn" onclick="submitAnswer(3)" id="q3Submit" disabled>Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="screen" id="resultsScreen">
+    <div class="header">
+      <div class="logo">
+        <img src="https://drive.usercontent.google.com/u/0/uc?id=1mX47w1mWsimA6RFTBfQCNSq4FDIwhD8B&export=view" alt="Coptic Gulf Youth">
+      </div>
+      <h1>Wait for the speaker to know what its all about</h1>
+    </div>
+
+    <div class="results-screen">
+      <div class="user-name-display" id="resultUserName"></div>
+      
+      <div class="score-display">
+        <div class="score-number" id="finalScore">0/3</div>
+        <div class="score-text">Correct Answers</div>
+      </div>
+
+      <div class="results-details" id="resultsDetails"></div>
+
+      <button class="reset-btn" onclick="resetContest()">Take Contest Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Quiz Configuration
+const quizData = [
+  {
+    id: 1,
+    question: "How many loading cycles have passed in the video?",
+    options: ["4", "12", "9", "15"],
+    correct: 0,
+    correctText: "4"
+  },
+  {
+    id: 2,
+    question: "How many loading cycles have passed in the video?",
+    options: ["3", "25", "7", "18"],
+    correct: 3,
+    correctText: "18"
+  },
+  {
+    id: 3,
+    question: "How many loading cycles have passed in the video?",
+    options: ["35", "8", "27", "too fast to count"],
+    correct: 2,
+    correctText: "27"
+  }
+];
+
+// State
+let state = {
+  userName: '',
+  currentQuestion: 0,
+  answers: [null, null, null],
+  answered: [false, false, false]
+};
+
+// Initialize
+function init() {
+  quizData.forEach((q, idx) => {
+    const optionsContainer = document.getElementById(`q${idx + 1}Options`);
+    optionsContainer.innerHTML = q.options.map((option, i) => `
+      <div class="option" onclick="selectOption(${idx + 1}, ${i})" id="q${idx + 1}o${i}">
+        ${String.fromCharCode(65 + i)}. ${option}
+      </div>
+    `).join('');
+  });
+}
+
+function handleNameKeypress(event) {
+  if (event.key === 'Enter') {
+    startContest();
+  }
+}
+
+function startContest() {
+  const name = document.getElementById('nameInput').value.trim();
+  const errorDiv = document.getElementById('nameError');
+  
+  if (!name) {
+    errorDiv.textContent = 'Please enter your name to continue';
+    return;
+  }
+  
+  state.userName = name;
+  errorDiv.textContent = '';
+  
+  showScreen('question1Screen');
+}
+
+function selectOption(questionNum, optionIndex) {
+  state.answers[questionNum - 1] = optionIndex;
+  
+  // Update UI
+  document.querySelectorAll(`#q${questionNum}Options .option`).forEach((opt, i) => {
+    opt.classList.remove('selected');
+    if (i === optionIndex) {
+      opt.classList.add('selected');
+    }
+  });
+  
+  // Enable submit button
+  document.getElementById(`q${questionNum}Submit`).disabled = false;
+}
+
+function submitAnswer(questionNum) {
+  state.answered[questionNum - 1] = true;
+  
+  const correct = state.answers[questionNum - 1] === quizData[questionNum - 1].correct;
+  
+  // Highlight correct/incorrect
+  document.querySelectorAll(`#q${questionNum}Options .option`).forEach((opt, i) => {
+    if (i === quizData[questionNum - 1].correct) {
+      opt.classList.add('correct');
+    } else if (i === state.answers[questionNum - 1]) {
+      opt.classList.add('incorrect');
+    }
+  });
+  
+  document.getElementById(`q${questionNum}Submit`).disabled = true;
+  
+  // Move to next or results
+  setTimeout(() => {
+    if (questionNum < 3) {
+      showScreen(`question${questionNum + 1}Screen`);
+    } else {
+      showResults();
+    }
+  }, 1500);
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function showResults() {
+  const correctCount = state.answers.filter((ans, idx) => ans === quizData[idx].correct).length;
+  
+  document.getElementById('resultUserName').textContent = `Contestant: ${state.userName}`;
+  document.getElementById('finalScore').textContent = `${correctCount}/3`;
+  
+  const resultsHTML = state.answers.map((ans, idx) => `
+    <div class="result-item">
+      <div class="result-item-question">Question ${idx + 1}</div>
+      <div class="result-item-answer ${ans === quizData[idx].correct ? 'correct' : 'incorrect'}">
+        ${ans === quizData[idx].correct ? '✓ Correct' : '✗ Incorrect'}
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('resultsDetails').innerHTML = resultsHTML;
+  showScreen('resultsScreen');
+}
+
+function resetContest() {
+  state = {
+    userName: '',
+    currentQuestion: 0,
+    answers: [null, null, null],
+    answered: [false, false, false]
+  };
+  
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameError').textContent = '';
+  
+  document.querySelectorAll('.option').forEach(opt => {
+    opt.classList.remove('selected', 'correct', 'incorrect');
+  });
+  
+  document.querySelectorAll('.submit-btn').forEach(btn => {
+    btn.disabled = true;
+  });
+  
+  showScreen('nameScreen');
+}
+
+// Initialize on load
+init();
+</script>
+
+</body>
+</html>
